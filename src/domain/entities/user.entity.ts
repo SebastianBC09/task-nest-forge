@@ -1,5 +1,12 @@
 type Raw = Record<string, unknown>;
 
+export type UserResponseDto = {
+  id: string;
+  name: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export class User {
   private readonly _id: string;
   private readonly _name: string | null;
@@ -28,5 +35,14 @@ export class User {
     const createdAt = r.createdAt instanceof Date ? r.createdAt : new Date(String(r.createdAt));
     const updatedAt = r.updatedAt instanceof Date ? r.updatedAt : new Date(String(r.updatedAt));
     return new User({ id, name, createdAt, updatedAt });
+  }
+
+  toResponseDto(): UserResponseDto {
+    return {
+      id: this._id,
+      name: this._name,
+      createdAt: this._createdAt.toISOString(),
+      updatedAt: this._updatedAt.toISOString(),
+    };
   }
 }

@@ -16,6 +16,18 @@ type PersistenceTaskRecord = {
   version?: number;
 };
 
+export type TaskResponseDto = {
+  id: string;
+  title: string;
+  description: string | null;
+  status: TaskStatus;
+  ownerId: string;
+  createdAt: string;
+  updatedAt: string;
+  deletedAt?: string | null;
+  version: number;
+};
+
 export class Task {
   private readonly _id: string;
   private _title: Title;
@@ -110,7 +122,7 @@ export class Task {
     }
   }
 
-  softDelete(): void {
+  delete(): void {
     if (this._deletedAt) return;
     this._deletedAt = new Date();
     this.touch();
@@ -120,4 +132,19 @@ export class Task {
     this._updatedAt = new Date();
     this._version += 1;
   }
+
+  toResponseDto(): TaskResponseDto {
+    return {
+      id: this._id,
+      title: this._title.value,
+      description: this._description,
+      status: this._status,
+      ownerId: this._ownerId.value,
+      createdAt: this._createdAt.toISOString(),
+      updatedAt: this._updatedAt.toISOString(),
+      deletedAt: this._deletedAt ? this._deletedAt.toISOString() : null,
+      version: this._version,
+    };
+  }
+
 }

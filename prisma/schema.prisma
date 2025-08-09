@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
 }
 
 datasource db {
@@ -30,7 +29,7 @@ model Task {
   ownerId     String
   owner       User       @relation(fields: [ownerId], references: [id], name: "UserTasks")
   createdAt   DateTime   @default(now())
-  updatedA    DateTime   @updatedAt
+  updatedAt   DateTime   @updatedAt
   deletedAt   DateTime?
   version     Int        @default(1)
 

@@ -5,7 +5,7 @@ import { isUuidString } from '../../domain/guards/type-guards';
 import { Task } from '../../domain/entities/task.entity';
 
 @Injectable()
-export class ListTaskService {
+export class ListTasksService {
   constructor(@Inject('TaskRepository') private taskRepo: TaskRepository) {}
 
   async execute(query: ListTasksQuery): Promise<Task[]> {

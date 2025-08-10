@@ -38,7 +38,7 @@ export class TasksController {
   @Get()
   async list(@Req() req) {
     const tasks = await this.listTasks.execute({ ownerId: req.user.id });
-    return tasks.map(t => t.toResponseDto());
+    return tasks.map((t) => t.toResponseDto());
   }
 
   @Post()
@@ -48,15 +48,19 @@ export class TasksController {
 
     const input: CreateTaskCommand = {
       title: dto.title.trim(),
-      description: dto. description ?? null,
-      ownerId: req.user.id
+      description: dto.description ?? null,
+      ownerId: req.user.id,
     };
     const task = await this.createTask.execute(input);
     return task.toResponseDto();
   }
 
   @Patch(':id/status')
-  async change(@Param('id') id: string, @Body() dto: ChangeStatusDto, @Req() req ) {
+  async change(
+    @Param('id') id: string,
+    @Body() dto: ChangeStatusDto,
+    @Req() req,
+  ) {
     const ownerId: string = req.user.id;
 
     const updated = await this.changeStatus.execute({
@@ -69,14 +73,18 @@ export class TasksController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: string, @Body() dto: UpdateTaskDto, @Req() req ) {
+  async update(
+    @Param('id') id: string,
+    @Body() dto: UpdateTaskDto,
+    @Req() req,
+  ) {
     const ownerId: string = req.user.id;
 
     const updated = await this.updateTask.execute({
       id,
       ownerId,
       title: dto.title,
-      description: dto. description,
+      description: dto.description,
       version: dto.version,
     });
     if (!updated) throw new NotFoundException('Task not found');
